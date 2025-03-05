@@ -99,7 +99,7 @@ public class SimpleAdder extends Application {
         labelB = new Label("0");
         outputLabel = new Label("0");
         operatorLabel = new Label(operationComboBox.getValue());
-        ;
+        
 
         HBox outputRow = new HBox(10, labelA, operatorLabel, labelB, new Label("="), outputLabel);
         outputRow.setAlignment(Pos.CENTER);
