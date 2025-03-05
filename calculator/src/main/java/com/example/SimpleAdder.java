@@ -1,5 +1,6 @@
 package com.example;
 
+import java.text.NumberFormat;
 import java.util.Random;
 
 import javafx.application.Application;
@@ -97,10 +98,8 @@ public class SimpleAdder extends Application {
         labelA = new Label("0");
         labelB = new Label("0");
         outputLabel = new Label("0");
-        operatorLabel = new Label();
-
-        operationComboBox.setOnAction(evt -> operatorLabel.setText(operationComboBox.getValue()));
-        operatorLabel.setText(operationComboBox.getValue());
+        operatorLabel = new Label(operationComboBox.getValue());
+        ;
 
         HBox outputRow = new HBox(10, labelA, operatorLabel, labelB, new Label("="), outputLabel);
         outputRow.setAlignment(Pos.CENTER);
@@ -123,8 +122,8 @@ public class SimpleAdder extends Application {
     private Button createRandomizeButton() {
         Button randomizeButton = new Button("Randomize");
         randomizeButton.setOnAction(evt -> {
-            textFieldA.setText(String.valueOf(rangeRandomInt(-1000, 1000)));
-            textFieldB.setText(String.valueOf(rangeRandomInt(-1000, 1000)));
+            textFieldA.setText(formatNumber(rangeRandomInt(-1000, 1000)));
+            textFieldB.setText(formatNumber(rangeRandomInt(-1000, 1000)));
         });
         return randomizeButton;
     }
@@ -139,8 +138,10 @@ public class SimpleAdder extends Application {
         String valueA = textFieldA.getText();
         String valueB = textFieldB.getText();
         String operation = operationComboBox.getValue();
-        labelA.setText(valueA);
-        labelB.setText(valueB);
+
+        labelA.setText(formatNumber(valueA));
+        labelB.setText(formatNumber(valueB));
+
         try {
             int numA = Integer.parseInt(valueA);
             int numB = Integer.parseInt(valueB);
@@ -162,7 +163,8 @@ public class SimpleAdder extends Application {
                     result = numA / numB;
                     break;
             }
-            outputLabel.setText(String.valueOf(result));
+            operatorLabel.setText(operationComboBox.getValue());
+            outputLabel.setText(formatNumber(result));
             showOutput();
         } catch (NumberFormatException e) {
             warningLabel.setText("Invalid input format.");
@@ -185,5 +187,13 @@ public class SimpleAdder extends Application {
 
     private int rangeRandomInt(int start, int end) {
         return random.nextInt(start, end);
+    }
+
+    private String formatNumber(int number) {
+        return String.valueOf(NumberFormat.getInstance().format(number));
+    }
+
+    private String formatNumber(String number) {
+        return String.valueOf(NumberFormat.getInstance().format(Integer.parseInt(number)));
     }
 }
