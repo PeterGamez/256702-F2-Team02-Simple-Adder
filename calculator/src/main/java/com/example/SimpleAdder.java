@@ -97,8 +97,10 @@ public class SimpleAdder extends Application {
         labelA = new Label("0");
         labelB = new Label("0");
         outputLabel = new Label("0");
-        String operation = operationComboBox.getValue();
-        var outputRow = new HBox(10, labelA, new Label(operation), labelB, new Label("="), outputLabel);
+        var operatorLabel = new Label();
+        operationComboBox.setOnAction(evt -> operatorLabel.setText(operationComboBox.getValue()));
+        operatorLabel.setText(operationComboBox.getValue());
+        var outputRow = new HBox(10, labelA, operatorLabel, labelB, new Label("="), outputLabel);
         outputRow.setAlignment(Pos.CENTER);
         return outputRow;
     }
