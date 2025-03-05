@@ -112,8 +112,8 @@ public class SimpleAdder extends Application {
     private Node createRandomizeButton() {
         var randomizeButton = new Button("Randomize");
         randomizeButton.setOnAction(evt -> {
-            textFieldA.setText(String.valueOf(random.nextInt(-1000, 1000)));
-            textFieldB.setText(String.valueOf(random.nextInt(-1000, 1000)));
+            textFieldA.setText(String.valueOf(rangeRandomInt(-1000, 1000)));
+            textFieldB.setText(String.valueOf(rangeRandomInt(-1000, 1000)));
         });
         return randomizeButton;
     }
@@ -143,5 +143,9 @@ public class SimpleAdder extends Application {
     private void showWarning() {
         outputRow.setVisible(false);
         warningLabel.setVisible(true);
+    }
+
+    private int rangeRandomInt(int start, int end) {
+        return random.nextInt(start, end);
     }
 }
