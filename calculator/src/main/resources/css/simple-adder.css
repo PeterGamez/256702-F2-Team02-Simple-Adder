@@ -2,7 +2,7 @@
   text-color: #424242;
   bg-color: #F5F5F5;
   banner-text-color: #FFFFFF;
-  banner-bg-color: #007AFF;
+  banner-bg-color: green;
 
   -fx-text-fill: text-color;
   -fx-background-color: bg-color;
