@@ -6,7 +6,7 @@
   <artifactId>calculator</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>simple-adder</name>
+  <name>calculator</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
@@ -96,7 +96,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>com.example.SimpleReactiveAdderWithHistory</mainClass>
+          <mainClass>com.example.SimpleAdder</mainClass>
         </configuration>
       </plugin>
     </plugins>
