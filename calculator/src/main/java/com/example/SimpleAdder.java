@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -28,7 +29,7 @@ public class SimpleAdder extends Application {
     private Label outputLabel;
     private Label warningLabel;
     private Node outputRow;
-
+    private ComboBox<String> operationComboBox;
     public static void main(String[] args) {
         launch(args);
     }
@@ -74,7 +75,10 @@ public class SimpleAdder extends Application {
     private Node createInputRow() {
         textFieldA = new TextField("0");
         textFieldB = new TextField("0");
-        var inputRow = new HBox(20, new Label("A:"), textFieldA, new Label("B:"), textFieldB);
+        operationComboBox = new ComboBox<>();
+        operationComboBox.getItems().addAll("+", "-", "x", "/");
+        operationComboBox.setValue("+");
+        var inputRow = new HBox(20, new Label("A:"), textFieldA, operationComboBox, new Label("B:"), textFieldB);
         inputRow.setAlignment(Pos.CENTER);
         return inputRow;
     }
@@ -91,7 +95,10 @@ public class SimpleAdder extends Application {
         labelA = new Label("0");
         labelB = new Label("0");
         outputLabel = new Label("0");
-        var outputRow = new HBox(10, labelA, new Label("+"), labelB, new Label("="), outputLabel);
+        var operatorLabel = new Label();
+        operationComboBox.setOnAction(evt -> operatorLabel.setText(operationComboBox.getValue()));
+        operatorLabel.setText(operationComboBox.getValue());
+        var outputRow = new HBox(10, labelA, operatorLabel, labelB, new Label("="), outputLabel);
         outputRow.setAlignment(Pos.CENTER);
         return outputRow;
     }
