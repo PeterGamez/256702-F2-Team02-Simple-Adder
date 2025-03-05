@@ -3,22 +3,24 @@ package com.example;
 import java.util.Random;
 
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class SimpleAdder extends Application {
+
     private static Random random = new Random();
 
     private TextField textFieldA;
@@ -28,6 +30,7 @@ public class SimpleAdder extends Application {
     private Label outputLabel;
     private Label warningLabel;
     private Node outputRow;
+    private ComboBox<String> operationComboBox;
 
     public static void main(String[] args) {
         launch(args);
@@ -35,7 +38,7 @@ public class SimpleAdder extends Application {
 
     @Override
     public void start(Stage stage) {
-        var scene = new Scene(createMainView(), 500, 200);
+        var scene = new Scene(createMainView(), 500, 250);
 
         stage.setScene(scene);
         stage.setTitle("Simple Adder");
@@ -74,7 +77,10 @@ public class SimpleAdder extends Application {
     private Node createInputRow() {
         textFieldA = new TextField("0");
         textFieldB = new TextField("0");
-        var inputRow = new HBox(20, new Label("A:"), textFieldA, new Label("B:"), textFieldB);
+        operationComboBox = new ComboBox<>();
+        operationComboBox.getItems().addAll("+", "-", "x", "/");
+        operationComboBox.setValue("+");
+        var inputRow = new HBox(20, new Label("A:"), textFieldA, operationComboBox, new Label("B:"), textFieldB);
         inputRow.setAlignment(Pos.CENTER);
         return inputRow;
     }
@@ -91,7 +97,8 @@ public class SimpleAdder extends Application {
         labelA = new Label("0");
         labelB = new Label("0");
         outputLabel = new Label("0");
-        var outputRow = new HBox(10, labelA, new Label("+"), labelB, new Label("="), outputLabel);
+        String operation = operationComboBox.getValue();
+        var outputRow = new HBox(10, labelA, new Label(operation), labelB, new Label("="), outputLabel);
         outputRow.setAlignment(Pos.CENTER);
         return outputRow;
     }
@@ -119,16 +126,41 @@ public class SimpleAdder extends Application {
     }
 
     private Node createAddButton() {
-        var addButton = new Button("Add");
+        var addButton = new Button("Calculate");
         addButton.setOnAction(evt -> {
             String valueA = textFieldA.getText();
             String valueB = textFieldB.getText();
+            String operation = operationComboBox.getValue();
             labelA.setText(valueA);
             labelB.setText(valueB);
             try {
-                outputLabel.setText(String.valueOf(Integer.parseInt(valueA) + Integer.parseInt(valueB)));
+                int numA = Integer.parseInt(valueA);
+                int numB = Integer.parseInt(valueB);
+                int result = 0;
+                switch (operation) {
+                    case "+":
+                        result = numA + numB;
+                        break;
+                    case "-":
+                        result = numA - numB;
+                        break;
+                    case "x":
+                        result = numA * numB;
+                        break;
+                    case "/":
+                        if (numB == 0) {
+                            throw new ArithmeticException("Division by zero");
+                        }
+                        result = numA / numB;
+                        break;
+                }
+                outputLabel.setText(String.valueOf(result));
                 showOutput();
             } catch (NumberFormatException e) {
+                warningLabel.setText("Invalid input format.");
+                showWarning();
+            } catch (ArithmeticException e) {
+                warningLabel.setText(e.getMessage());
                 showWarning();
             }
         });
