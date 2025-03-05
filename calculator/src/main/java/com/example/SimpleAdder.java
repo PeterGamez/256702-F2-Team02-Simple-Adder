@@ -3,7 +3,8 @@ package com.example;
 import java.util.Random;
 
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,15 +12,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class SimpleAdder extends Application {
+
     private static Random random = new Random();
 
     private TextField textFieldA;
@@ -30,13 +31,14 @@ public class SimpleAdder extends Application {
     private Label warningLabel;
     private Node outputRow;
     private ComboBox<String> operationComboBox;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage stage) {
-        var scene = new Scene(createMainView(), 500, 200);
+        var scene = new Scene(createMainView(), 500, 250);
 
         stage.setScene(scene);
         stage.setTitle("Simple Adder");
@@ -126,16 +128,41 @@ public class SimpleAdder extends Application {
     }
 
     private Node createAddButton() {
-        var addButton = new Button("Add");
+        var addButton = new Button("Calculate");
         addButton.setOnAction(evt -> {
             String valueA = textFieldA.getText();
             String valueB = textFieldB.getText();
+            String operation = operationComboBox.getValue();
             labelA.setText(valueA);
             labelB.setText(valueB);
             try {
-                outputLabel.setText(String.valueOf(Integer.parseInt(valueA) + Integer.parseInt(valueB)));
+                int numA = Integer.parseInt(valueA);
+                int numB = Integer.parseInt(valueB);
+                int result = 0;
+                switch (operation) {
+                    case "+":
+                        result = numA + numB;
+                        break;
+                    case "-":
+                        result = numA - numB;
+                        break;
+                    case "x":
+                        result = numA * numB;
+                        break;
+                    case "/":
+                        if (numB == 0) {
+                            throw new ArithmeticException("Division by zero");
+                        }
+                        result = numA / numB;
+                        break;
+                }
+                outputLabel.setText(String.valueOf(result));
                 showOutput();
             } catch (NumberFormatException e) {
+                warningLabel.setText("Invalid input format.");
+                showWarning();
+            } catch (ArithmeticException e) {
+                warningLabel.setText(e.getMessage());
                 showWarning();
             }
         });
