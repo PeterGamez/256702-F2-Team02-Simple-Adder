@@ -78,6 +78,7 @@ public class SimpleAdder extends Application {
         operationComboBox = new ComboBox<>();
         operationComboBox.getItems().addAll("+", "-", "x", "/");
         operationComboBox.setValue("+");
+        operationComboBox.setOnAction(e -> operatorLabel.setText(operationComboBox.getValue()));
 
         HBox inputRow = new HBox(20, new Label("A:"), textFieldA, operationComboBox, new Label("B:"), textFieldB);
         inputRow.setAlignment(Pos.CENTER);
@@ -99,7 +100,6 @@ public class SimpleAdder extends Application {
         labelB = new Label("0");
         outputLabel = new Label("0");
         operatorLabel = new Label(operationComboBox.getValue());
-        
 
         HBox outputRow = new HBox(10, labelA, operatorLabel, labelB, new Label("="), outputLabel);
         outputRow.setAlignment(Pos.CENTER);
